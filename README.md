@@ -5,7 +5,7 @@ Link: https://resumeanalyzerak47.streamlit.app/
 
 <div align="center">
 
-# ◈ ResumeIQ
+# 📝 ResumeIQ
 
 ### AI-Powered Resume Intelligence Platform
 
