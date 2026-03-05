@@ -983,7 +983,7 @@ with right:
 
             cleaned  = clean_resume(resume_text)
             name     = extract_name_from_resume(resume_text)
-            skills   = extract_top_skills(resume_text, num_skills=12)
+            skills   = extract_top_skills(resume_text, num_skills=5)
 
             try:
                 category = predict_category(uploaded)
