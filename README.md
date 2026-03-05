@@ -49,8 +49,8 @@ Link: https://resumeanalyzerak47.streamlit.app/
 | Feature | Description |
 |---|---|
 | 📄 **Multi-format Parsing** | Supports PDF, DOCX, and TXT resume uploads |
-| 👤 **Name Extraction** | Identifies candidate names via spaCy NER + regex heuristics |
-| 🛠 **Skills Detection** | Matches against a curated database of 100+ technical skills |
+| 👤 **Name Extraction** | Identifies candidate names via spaCy NER + regex heuristics or Use LLM as a fallback |
+| 🛠 **Skills Detection** | Matches against a curated database of 100+ technical skills, with LLM as an intelligent fallback for unlisted or emerging skills |
 | 🏷 **Job Category Prediction** | Logistic Regression model predicts the most fitting job category |
 | 🎯 **Match Scoring** | TF-IDF / Sentence Transformers cosine similarity against any JD |
 | 📊 **Score Breakdown** | 5-dimension analysis: Keywords, Skills Overlap, Experience Fit, Role Alignment, Tech Stack |
