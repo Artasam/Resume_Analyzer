@@ -1,0 +1,12 @@
+nltk
+langchain-huggingface
+langchain
+langchain-community
+langchain-core
+scikit-learn
+spacy
+python-dotenv
+PyPDF2
+python-docx
+streamlit
+plotly

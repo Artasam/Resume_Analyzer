@@ -1,0 +1,7 @@
+# ── Environment ───────────────────────────────────────────────
+.env
+.env.*
+*.env
+
+# ── RS folder (if sensitive / raw data) ───────────────────────
+RS/
