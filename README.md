@@ -250,9 +250,6 @@ Environment variables (`.env`):
 ```env
 # Optional: HuggingFace API token for private models
 HUGGINGFACE_TOKEN=your_token_here
-
-# Optional: OpenAI / LangChain key if using LLM features
-OPENAI_API_KEY=your_key_here
 ```
 
 ---
