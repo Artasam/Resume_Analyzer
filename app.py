@@ -53,6 +53,7 @@ st.markdown("""
   --indigo:    #6366F1;
 }
 
+html { scroll-behavior: smooth; }
 html, body,
 [data-testid="stAppViewContainer"],
 [data-testid="stAppViewContainer"] > .main {
@@ -84,7 +85,42 @@ section[data-testid="stSidebar"] { background: var(--bg2) !important; border-rig
     100% { background-position: 60px 60px; }
 }
 
-/* ── nebula blobs ── */
+/* ── motion tokens (2025–2026 UI) ── */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translate3d(0, 14px, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@keyframes gradientFlow {
+    0%, 100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+}
+@keyframes stripFlow {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+@keyframes auroraShift {
+    0%, 100% { opacity: 1; transform: scale(1) translate3d(0, 0, 0); }
+    33%      { opacity: 0.92; transform: scale(1.03) translate3d(1%, -0.5%, 0); }
+    66%      { opacity: 0.88; transform: scale(1.02) translate3d(-0.5%, 0.5%, 0); }
+}
+@keyframes beamPulse {
+    0%, 100% { opacity: 1; filter: blur(0.5px); }
+    50%      { opacity: 0.75; filter: blur(1px); }
+}
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-5px); }
+}
+@keyframes pillPop {
+    from { opacity: 0; transform: scale(0.92); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── nebula blobs (ambient drift) ── */
 [data-testid="stAppViewContainer"]::after {
     content: '';
     position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -92,6 +128,7 @@ section[data-testid="stSidebar"] { background: var(--bg2) !important; border-rig
         radial-gradient(ellipse 800px 500px at 15% 10%, rgba(99,57,242,0.09) 0%, transparent 60%),
         radial-gradient(ellipse 600px 400px at 85% 80%, rgba(34,211,238,0.05) 0%, transparent 55%),
         radial-gradient(ellipse 500px 300px at 60% 40%, rgba(52,211,153,0.04) 0%, transparent 50%);
+    animation: auroraShift 28s ease-in-out infinite;
 }
 
 .block-container {
@@ -171,9 +208,11 @@ section[data-testid="stSidebar"] { background: var(--bg2) !important; border-rig
 }
 .hero-title .grad {
     background: linear-gradient(135deg, #7C5CF6 0%, #22D3EE 45%, #34D399 100%);
+    background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    animation: gradientFlow 10s ease infinite;
 }
 .hero-version {
     font-family: 'DM Mono', monospace;
@@ -217,6 +256,17 @@ section[data-testid="stSidebar"] { background: var(--bg2) !important; border-rig
 .hero-stat-num .accent-c { color: var(--cyan); }
 .hero-stat-num .accent-e { color: var(--emerald); }
 
+/* Hero staggered entrance */
+.hero-beam { animation: fadeIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both, beamPulse 5s ease-in-out 0.9s infinite; }
+.hero-badge { animation: fadeInUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both; }
+.hero-title { animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.14s both; }
+.hero-version { animation: fadeInUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both; }
+.hero-desc { animation: fadeInUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.26s both; }
+.hero-stats { animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.32s both; }
+.hero-stats > div:nth-child(1) { animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both; }
+.hero-stats > div:nth-child(2) { animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.48s both; }
+.hero-stats > div:nth-child(3) { animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.56s both; }
+
 /* ══════════════════════════════════════════
    INPUT PANEL
 ══════════════════════════════════════════ */
@@ -227,7 +277,18 @@ section[data-testid="stSidebar"] { background: var(--bg2) !important; border-rig
     padding: 0;
     overflow: hidden;
     position: relative;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease, border-color 0.35s ease;
 }
+.inp-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(124, 92, 246, 0.12);
+}
+.anim-rise {
+    opacity: 0;
+    animation: fadeInUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.anim-rise-delay { opacity: 0; animation: fadeInUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards; }
+.anim-rise-slow { opacity: 0; animation: fadeInUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards; }
 .inp-card-head {
     padding: 1.2rem 1.6rem;
     border-bottom: 1px solid var(--border);
@@ -353,6 +414,11 @@ textarea::placeholder { color: #3A3858 !important; }
     border-radius: 24px;
     overflow: hidden;
     position: relative;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+}
+.res-panel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 24px 56px rgba(0, 0, 0, 0.38);
 }
 .res-panel-head {
     padding: 1.2rem 1.6rem;
@@ -367,6 +433,8 @@ textarea::placeholder { color: #3A3858 !important; }
     position: absolute;
     top: 0; left: 0; right: 0; height: 2px;
     background: linear-gradient(90deg, #7C5CF6, #22D3EE 55%, #34D399 100%);
+    background-size: 200% 100%;
+    animation: stripFlow 7s ease infinite;
 }
 
 /* ── stat cards grid ── */
@@ -383,9 +451,22 @@ textarea::placeholder { color: #3A3858 !important; }
     padding: 1.2rem 1.1rem 1.3rem;
     position: relative;
     overflow: hidden;
-    transition: border-color 0.2s;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease, box-shadow 0.4s ease;
 }
-.stat-card:hover { border-color: rgba(124,92,246,0.25); }
+.stat-card:hover {
+    border-color: rgba(124,92,246,0.35);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(124, 92, 246, 0.08);
+}
+.anim-stat-grid .stat-card {
+    opacity: 0;
+    animation: fadeInUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.anim-stat-grid .stat-card:nth-child(1) { animation-delay: 0.06s; }
+.anim-stat-grid .stat-card:nth-child(2) { animation-delay: 0.12s; }
+.anim-stat-grid .stat-card:nth-child(3) { animation-delay: 0.18s; }
+.anim-stat-grid + .anim-stat-grid .stat-card:nth-child(1) { animation-delay: 0.24s; }
+.anim-stat-grid + .anim-stat-grid .stat-card:nth-child(2) { animation-delay: 0.3s; }
 .stat-card-glow {
     position: absolute;
     bottom: 0; left: 0; right: 0; height: 1px;
@@ -423,6 +504,8 @@ textarea::placeholder { color: #3A3858 !important; }
     border-radius: 18px;
     padding: 1.2rem 1.3rem 1.4rem;
     margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeInUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s forwards;
 }
 .block-label {
     font-size: 0.63rem;
@@ -448,10 +531,18 @@ textarea::placeholder { color: #3A3858 !important; }
     padding: 0.3rem 0.9rem;
     border-radius: 100px;
     letter-spacing: 0.02em;
-    transition: all 0.15s ease;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), filter 0.25s ease, box-shadow 0.35s ease;
     cursor: default;
+    opacity: 0;
+    animation: pillPop 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
-.pill:hover { transform: translateY(-1px); filter: brightness(1.15); }
+.pills .pill:nth-child(1)  { animation-delay: 0.2s; }
+.pills .pill:nth-child(2)  { animation-delay: 0.26s; }
+.pills .pill:nth-child(3)  { animation-delay: 0.32s; }
+.pills .pill:nth-child(4)  { animation-delay: 0.38s; }
+.pills .pill:nth-child(5)  { animation-delay: 0.44s; }
+.pills .pill:nth-child(n+6) { animation-delay: 0.5s; }
+.pill:hover { transform: translateY(-3px) scale(1.02); filter: brightness(1.12); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
 .pill-v  { background: rgba(124,92,246,0.12); border: 1px solid rgba(124,92,246,0.28); color: #B4A8F5; }
 .pill-c  { background: rgba(34,211,238,0.10); border: 1px solid rgba(34,211,238,0.25); color: #7DD3F8; }
 .pill-e  { background: rgba(52,211,153,0.10); border: 1px solid rgba(52,211,153,0.23); color: #6EE7B7; }
@@ -472,7 +563,16 @@ textarea::placeholder { color: #3A3858 !important; }
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
+    opacity: 0;
+    animation: fadeInUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    transition: border-color 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
+.insight-row .insight-item:nth-child(1) { animation-delay: 0.1s; }
+.insight-row .insight-item:nth-child(2) { animation-delay: 0.16s; }
+.insight-row .insight-item:nth-child(3) { animation-delay: 0.22s; }
+.insight-row .insight-item:nth-child(4) { animation-delay: 0.28s; }
+.insight-row .insight-item:nth-child(5) { animation-delay: 0.34s; }
+.insight-item:hover { transform: translateX(4px); border-color: rgba(124,92,246,0.22); }
 .insight-ico {
     font-size: 1.1rem;
     line-height: 1.4;
@@ -490,6 +590,8 @@ textarea::placeholder { color: #3A3858 !important; }
     margin-bottom: 1rem;
     position: relative;
     overflow: hidden;
+    opacity: 0;
+    animation: fadeInUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards;
 }
 .gauge-header {
     display: flex;
@@ -505,6 +607,8 @@ textarea::placeholder { color: #3A3858 !important; }
     border-radius: 18px;
     padding: 1.3rem 1.4rem;
     margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeInUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.12s forwards;
 }
 .bar-row { margin-bottom: 0.85rem; }
 .bar-row:last-child { margin-bottom: 0; }
@@ -546,7 +650,11 @@ textarea::placeholder { color: #3A3858 !important; }
     margin-bottom: 1rem;
     position: relative;
     overflow: hidden;
+    opacity: 0;
+    animation: fadeInUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.18s forwards;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
 }
+.verdict-box:hover { transform: scale(1.01); box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
 .verdict-glyph { font-size: 1.4rem; line-height: 1.3; flex-shrink: 0; }
 .verdict-text  { font-size: 0.86rem; line-height: 1.65; }
 .verdict-text .vt { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; display: block; margin-bottom: 0.25rem; }
@@ -558,8 +666,11 @@ textarea::placeholder { color: #3A3858 !important; }
     border-radius: 18px;
     padding: 4.5rem 2rem;
     text-align: center;
+    opacity: 0;
+    animation: fadeInUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
-.empty-icon { font-size: 2.8rem; margin-bottom: 1rem; opacity: 0.4; display: block; }
+.empty-icon { font-size: 2.8rem; margin-bottom: 1rem; opacity: 0.4; display: block; animation: floatIcon 4s ease-in-out infinite; }
+.empty.anim-rise .empty-icon { animation: floatIcon 4s ease-in-out infinite, fadeIn 0.8s ease both; }
 .empty-title {
     font-family: 'Syne', sans-serif;
     font-size: 1.1rem;
@@ -596,9 +707,16 @@ textarea::placeholder { color: #3A3858 !important; }
     padding: 0.5rem 0.75rem;
     border-radius: 10px;
     border: 1px solid transparent;
-    transition: all 0.15s ease;
+    transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 0;
+    animation: fadeInUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
-.feature-item:hover { background: rgba(124,92,246,0.05); border-color: var(--border); color: #8A88AB; }
+.feature-item:hover { background: rgba(124,92,246,0.05); border-color: var(--border); color: #8A88AB; transform: translateX(4px); }
+.feature-list .feature-item:nth-child(1) { animation-delay: 0.05s; }
+.feature-list .feature-item:nth-child(2) { animation-delay: 0.1s; }
+.feature-list .feature-item:nth-child(3) { animation-delay: 0.15s; }
+.feature-list .feature-item:nth-child(4) { animation-delay: 0.2s; }
+.feature-list .feature-item:nth-child(5) { animation-delay: 0.25s; }
 .feature-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
 /* ── labels ── */
@@ -627,8 +745,28 @@ hr { border: none !important; border-top: 1px solid var(--border) !important; ma
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: #1E1D30;
+    opacity: 0;
+    animation: fadeInUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
 }
 .footer a { color: #2E2D48; text-decoration: none; }
+
+/* ── accessibility: respect reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    [data-testid="stAppViewContainer"]::before,
+    [data-testid="stAppViewContainer"]::after { animation: none !important; }
+    .hero-beam, .hero-badge, .hero-title, .hero-version, .hero-desc,
+    .hero-stats, .hero-stats > div, .hero-title .grad, .res-strip,
+    .empty-icon { animation: none !important; }
+    .anim-rise, .anim-rise-delay, .anim-rise-slow,
+    .anim-stat-grid .stat-card, .skills-block, .pills .pill,
+    .insight-item, .gauge-wrap, .breakdown-block, .verdict-box,
+    .empty, .feature-item, .footer {
+        opacity: 1 !important;
+        animation: none !important;
+        transform: none !important;
+    }
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -853,7 +991,7 @@ with left:
 
     # ── upload card ──
     st.markdown("""
-    <div class="inp-card">
+    <div class="inp-card anim-rise">
       <div class="inp-card-head">
         <div class="inp-card-title">
           <div class="inp-card-icon" style="background:rgba(124,92,246,0.12);border:1px solid rgba(124,92,246,0.22);">📎</div>
@@ -876,7 +1014,7 @@ with left:
 
     # ── job description card ──
     st.markdown("""
-    <div class="inp-card">
+    <div class="inp-card anim-rise-delay">
       <div class="inp-card-head">
         <div class="inp-card-title">
           <div class="inp-card-icon" style="background:rgba(34,211,238,0.1);border:1px solid rgba(34,211,238,0.18);">📋</div>
@@ -902,7 +1040,7 @@ with left:
 
     # ── feature list ──
     st.markdown("""
-    <div class="feature-list">
+    <div class="feature-list anim-rise-slow">
       <div class="feature-item">
         <div class="feature-dot" style="background:#7C5CF6;box-shadow:0 0 6px rgba(124,92,246,0.5)"></div>
         Name extraction via spaCy / regex heuristics
@@ -933,7 +1071,7 @@ with left:
 with right:
 
     st.markdown("""
-    <div class="res-panel">
+    <div class="res-panel anim-rise-delay">
       <div class="res-strip"></div>
       <div class="res-panel-head">
         <div class="inp-card-title" style="color:#6C6A8A;font-size:0.72rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;display:flex;align-items:center;gap:0.6rem;">
@@ -943,6 +1081,17 @@ with right:
       </div>
       <div class="res-panel-body">
     """, unsafe_allow_html=True)
+
+    # Keep results visible after secondary buttons (e.g. bullet rewrite) rerun the app —
+    # st.button("Analyse") is only True on the click that triggered it.
+    if uploaded:
+        _resume_ctx = f"{uploaded.name}:{uploaded.size}"
+        if st.session_state.get("_resume_analysis_ctx") != _resume_ctx:
+            st.session_state["_resume_analysis_ctx"] = _resume_ctx
+            st.session_state["analysis_active"] = False
+            st.session_state.pop("analysis_cache", None)
+            st.session_state.pop("bullet_rewrite_rows", None)
+            st.session_state.pop("bullet_rewrite_err", None)
 
     # ── STATE: no file ────────────────────────────────────────────────────────
     if not uploaded:
@@ -955,7 +1104,7 @@ with right:
         """, unsafe_allow_html=True)
 
     # ── STATE: file ready, not analysed ──────────────────────────────────────
-    elif not analyse:
+    elif uploaded and not analyse and not st.session_state.get("analysis_active"):
         fname = uploaded.name
         fsize = f"{uploaded.size / 1024:.1f} KB"
         st.markdown(f"""
@@ -969,33 +1118,56 @@ with right:
         </div>
         """, unsafe_allow_html=True)
 
-    # ── STATE: analyse ────────────────────────────────────────────────────────
+    # ── STATE: analyse (this run) or viewing cached results (same file) ───────
     else:
-        with st.spinner("◈ Processing resume…"):
+        if analyse:
+            with st.spinner("◈ Processing resume…"):
 
-            # 1 — extract & clean
-            try:
-                resume_text = extract_text(uploaded, uploaded.name)
-            except Exception as exc:
-                st.markdown(f'<div class="alert alert-err">⚠ Could not read file: {exc}</div>',
-                            unsafe_allow_html=True)
-                st.stop()
-
-            cleaned  = clean_resume(resume_text)
-            name     = extract_name_from_resume(resume_text)
-            skills   = extract_top_skills(resume_text, num_skills=5)
-
-            try:
-                category = predict_category(uploaded)
-            except Exception:
-                category = _predict(cleaned)
-
-            match_score = None
-            if job_desc.strip():
+                # 1 — extract & clean
                 try:
-                    match_score = match_resume_hf(resume_text, job_desc)
+                    resume_text = extract_text(uploaded, uploaded.name)
+                except Exception as exc:
+                    st.markdown(f'<div class="alert alert-err">⚠ Could not read file: {exc}</div>',
+                                unsafe_allow_html=True)
+                    st.stop()
+
+                cleaned  = clean_resume(resume_text)
+                name     = extract_name_from_resume(resume_text)
+                skills   = extract_top_skills(resume_text, num_skills=5)
+
+                try:
+                    category = predict_category(uploaded)
                 except Exception:
-                    match_score = None
+                    category = _predict(cleaned)
+
+                match_score = None
+                if job_desc.strip():
+                    try:
+                        match_score = match_resume_hf(resume_text, job_desc)
+                    except Exception:
+                        match_score = None
+
+            st.session_state["analysis_cache"] = {
+                "resume_text": resume_text,
+                "cleaned": cleaned,
+                "name": name,
+                "skills": skills,
+                "category": category,
+                "match_score": match_score,
+            }
+            st.session_state["analysis_active"] = True
+        else:
+            _cache = st.session_state.get("analysis_cache")
+            if not _cache:
+                st.session_state["analysis_active"] = False
+                st.warning("Session expired — click **Analyse Resume** again to reload results.")
+                st.stop()
+            resume_text = _cache["resume_text"]
+            cleaned = _cache["cleaned"]
+            name = _cache["name"]
+            skills = _cache["skills"]
+            category = _cache["category"]
+            match_score = _cache["match_score"]
 
         # ── 1. STAT CARDS ─────────────────────────────────────────────────────
         cat_display  = category if category else "—"
@@ -1004,7 +1176,7 @@ with right:
         word_count   = len(resume_text.split()) if resume_text else 0
 
         st.markdown(f"""
-        <div class="stat-grid">
+        <div class="stat-grid anim-stat-grid">
           <div class="stat-card">
             <div class="stat-card-glow"></div>
             <span class="stat-ico">👤</span>
@@ -1025,7 +1197,7 @@ with right:
           </div>
         </div>
 
-        <div class="stat-grid" style="grid-template-columns:repeat(2,1fr)">
+        <div class="stat-grid anim-stat-grid" style="grid-template-columns:repeat(2,1fr)">
           <div class="stat-card">
             <div class="stat-card-glow"></div>
             <span class="stat-ico">🛠</span>
@@ -1158,6 +1330,82 @@ with right:
               ◈ &nbsp;Category model files not found in <code>models/</code> — prediction skipped.
             </div>
             """, unsafe_allow_html=True)
+
+        # ── AI bullet polish (Groq) ─────────────────────────────────────────────
+        from rewriting.bullet_rewriter import extract_candidate_bullets, rewrite_weak_bullets
+
+        _bullet_ctx = f"{uploaded.name}:{uploaded.size}"
+
+        with st.expander("✨ AI bullet polish — achievement-focused rewrites", expanded=False):
+            st.caption(
+                "Uses your Groq API key (same as ATS). Either auto-pick weak experience lines "
+                "or paste bullets below. Always fact-check suggestions before sending applications."
+            )
+            _suggest = extract_candidate_bullets(resume_text, limit=15)
+            _default_lines = "\n".join(_suggest[:12]) if _suggest else ""
+            _bullet_paste = st.text_area(
+                "Optional: one bullet per line (leave empty for auto-detect from resume)",
+                value=_default_lines,
+                height=140,
+                key=f"bullet_paste_{_bullet_ctx}",
+            )
+            bc1, bc2 = st.columns(2)
+            with bc1:
+                _run_auto = st.button(
+                    "Find & rewrite weak bullets",
+                    use_container_width=True,
+                    key=f"btn_bullet_auto_{_bullet_ctx}",
+                )
+            with bc2:
+                _run_paste = st.button(
+                    "Rewrite pasted lines only",
+                    use_container_width=True,
+                    key=f"btn_bullet_paste_{_bullet_ctx}",
+                )
+
+            if _run_auto:
+                with st.spinner("Calling AI…"):
+                    _rows, _berr = rewrite_weak_bullets(resume_text, job_desc, max_bullets=8)
+                st.session_state["bullet_rewrite_rows"] = _rows
+                st.session_state["bullet_rewrite_err"] = _berr
+
+            if _run_paste:
+                _lines = [ln.strip() for ln in _bullet_paste.splitlines() if ln.strip()]
+                if not _lines:
+                    st.session_state["bullet_rewrite_rows"] = []
+                    st.session_state["bullet_rewrite_err"] = "Paste at least one line, or use auto-detect."
+                else:
+                    with st.spinner("Calling AI…"):
+                        _rows, _berr = rewrite_weak_bullets(
+                            resume_text,
+                            job_desc,
+                            max_bullets=min(len(_lines), 12),
+                            custom_bullets=_lines,
+                        )
+                    st.session_state["bullet_rewrite_rows"] = _rows
+                    st.session_state["bullet_rewrite_err"] = _berr
+
+            _berr = st.session_state.get("bullet_rewrite_err")
+            _rows = st.session_state.get("bullet_rewrite_rows")
+            if _berr:
+                st.error(_berr)
+            elif _rows:
+                st.success(f"{len(_rows)} suggestion(s) — copy any line you want into your resume.")
+                for _i, _row in enumerate(_rows, 1):
+                    st.markdown(f"##### {_i}.")
+                    st.markdown("**Original**")
+                    st.text(_row["original"])
+                    st.markdown("**Suggested rewrite**")
+                    st.text(_row["rewritten"])
+                    if _row.get("why"):
+                        st.caption(_row["why"])
+                    st.divider()
+
+        from ats.ats_integration import get_ats_report, render_ats_panel
+
+        # Inside the analyse block:
+        ats_report = get_ats_report(uploaded, job_desc)
+        render_ats_panel(ats_report)        
 
     st.markdown("</div></div>", unsafe_allow_html=True)
 
